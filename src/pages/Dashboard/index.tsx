@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { Component, useState } from 'react';
 
 import Header from '../../components/Header';
 import api from '../../services/api';
@@ -7,6 +7,12 @@ import ModalAddFood from '../../components/ModalAddFood';
 import ModalEditFood from '../../components/ModalEditFood';
 import { FoodsContainer } from './styles';
 
+function Dashboard() {
+  const [foods, setFoods] = useState([])
+  const [editingFood, setEditingFood] = useState({})
+  const [modalOpen, setModalOpen] = useState(false)
+  const [editModalOpen, setEditModalOpen] = useState(false)
+}
 class Dashboard extends Component {
   constructor(props) {
     super(props);
