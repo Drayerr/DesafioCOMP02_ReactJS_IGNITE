@@ -1,35 +1,32 @@
-import { Component, createRef } from 'react';
+import { createRef } from 'react';
 import { FiCheckSquare } from 'react-icons/fi';
 
 import { Form } from './styles';
-import Modal from '../Modal';
+import Modal, { ModalProps } from '../Modal';
 import Input from '../Input';
+import { FormHandles, SubmitHandler } from '@unform/core';
 
-class ModalAddFood extends Component {
-  constructor(props) {
-    super(props);
 
-    this.formRef = createRef();
-  }
+export interface ModalAddFoodProps extends ModalProps {
+  handleAddFood: (data : Food) => void
+}
 
-  handleSubmit = async data => {
-    const { setIsOpen, handleAddFood } = this.props;
+function ModalAddFood({isOpen, setIsOpen, handleAddFood} : ModalAddFoodProps) {
+    const formRef = createRef<FormHandles>();
 
+  const handleSubmit : SubmitHandler<Food> = async (data) => {
     handleAddFood(data);
     setIsOpen();
   };
 
-  render() {
-    const { isOpen, setIsOpen } = this.props;
-
     return (
       <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
-        <Form ref={this.formRef} onSubmit={this.handleSubmit}>
+        <Form ref={formRef} onSubmit={handleSubmit}>
           <h1>Novo Prato</h1>
           <Input name="image" placeholder="Cole o link aqui" />
 
           <Input name="name" placeholder="Ex: Moda Italiana" />
-          <Input name="price" placeholder="Ex: 19.90" />
+          <Input name="price" type="number" placeholder="Ex: 19.90" />
 
           <Input name="description" placeholder="Descrição" />
           <button type="submit" data-testid="add-food-button">
@@ -42,6 +39,5 @@ class ModalAddFood extends Component {
       </Modal>
     );
   }
-};
 
 export default ModalAddFood;
