@@ -9,7 +9,7 @@ import { ModalAddFoodProps } from '../ModalAddFood';
 
 interface ModalEditFoodProps extends ModalProps {
   editingFood: Food
-  handleUpdateFood: (data : Food) => void
+  handleUpdateFood: (data: Food) => void
 }
 
 function ModalEditFood({ isOpen, setIsOpen, editingFood, handleUpdateFood }: ModalEditFoodProps) {

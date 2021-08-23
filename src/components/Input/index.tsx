@@ -6,12 +6,12 @@ import { Container } from './styles';
 import { InputHTMLAttributes } from 'react';
 import { IconBaseProps } from 'react-icons/lib';
 
-interface InputProps extends InputHTMLAttributes<HTMLInputElement>{
+interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   name: string
   icon?: React.ComponentType<IconBaseProps>
 }
 
-const Input = ({ name, icon: Icon, ...rest } : InputProps) => {
+const Input = ({ name, icon: Icon, ...rest }: InputProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const [isFocused, setIsFocused] = useState(false);
