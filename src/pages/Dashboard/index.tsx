@@ -8,23 +8,23 @@ import ModalEditFood from '../../components/ModalEditFood';
 import { FoodsContainer } from './styles';
 import { useEffect } from 'react';
 
-
-async function Dashboard() {
+function Dashboard() {
   const [foods, setFoods] = useState<Foods[]>([])
   const [editingFood, setEditingFood] = useState<Foods>({} as Foods)
   const [modalOpen, setModalOpen] = useState(false)
   const [editModalOpen, setEditModalOpen] = useState(false)
 
-
   useEffect(() => {
-    async function loadFoods(): Promise<void> {
+    async function loadFoods() {
       const response = await api.get('/foods');
+
+      console.log(response.data)
+
       setFoods(response.data)
     }
 
     loadFoods()
   }, [])
-
 
   async function handleAddFood(food: Food) {
     try {
@@ -34,71 +34,71 @@ async function Dashboard() {
       toggleModal()
     } catch (err) {
       console.log(err);
-
     }
+  }
 
-    async function handleUpdateFood(food: Food) {
-      const response = await api.put(`/foods/${editingFood.id}`, {
-        ...food,
-        available: editingFood.available
-      })
-      const foodsUpdated= [...foods]
-      const findIndex = foodsUpdated.findIndex(
-        (findFood) => findFood.id === editingFood.id
-      )
+  async function handleUpdateFood(food: Food) {
+    const response = await api.put(`/foods/${editingFood.id}`, {
+      ...food,
+      available: editingFood.available
+    })
+    const foodsUpdated = [...foods]
+    const findIndex = foodsUpdated.findIndex(
+      (findFood) => findFood.id === editingFood.id
+    )
 
-      foodsUpdated[findIndex] = response.data
+    foodsUpdated[findIndex] = response.data
 
-      setFoods(foodsUpdated)
-      toggleEditModal()
-    }
+    setFoods(foodsUpdated)
+    toggleEditModal()
+  }
 
-    async function handleDeleteFood(id: number) {
-      await api.delete(`/foods/${id}`)
-      setFoods(foods.filter((food) => food.id !== id))
-    }
+  async function handleDeleteFood(id: number) {
+    await api.delete(`/foods/${id}`)
+    setFoods(foods.filter((food) => food.id !== id))
+  }
 
-    function toggleModal() {
-      setModalOpen(!modalOpen)
-    }
+  function toggleModal() {
+    setModalOpen(!modalOpen)
+  }
 
-    function toggleEditModal() {
-      setEditModalOpen(!editModalOpen)
-    }
+  function toggleEditModal() {
+    setEditModalOpen(!editModalOpen)
+  }
 
-    function handleEditFood(food: Foods) {
-      setEditingFood(food)
-      setEditModalOpen(true)
-    }
+  function handleEditFood(food: Foods) {
+    setEditingFood(food)
+    setEditModalOpen(true)
+  }
 
-      return (
-        <>
-          <Header openModal={toggleModal} />
-          <ModalAddFood
-            isOpen={modalOpen}
-            setIsOpen={toggleModal}
-            handleAddFood={handleAddFood}
+  return (
+    <>
+      <Header openModal={toggleModal} />
+      <ModalAddFood
+        isOpen={modalOpen}
+        setIsOpen={toggleModal}
+        handleAddFood={handleAddFood}
+      />
+      <ModalEditFood
+        isOpen={editModalOpen}
+        setIsOpen={toggleEditModal}
+        editingFood={editingFood}
+        handleUpdateFood={handleUpdateFood}
+      />
+
+      <FoodsContainer data-testid="foods-list">
+        {foods.map(food => (
+          <Food
+            key={food.id}
+            food={food}
+            handleDelete={handleDeleteFood}
+            handleEditFood={handleEditFood}
           />
-          <ModalEditFood
-            isOpen={editModalOpen}
-            setIsOpen={toggleEditModal}
-            editingFood={editingFood}
-            handleUpdateFood={handleUpdateFood}
-          />
+        ))}
+      </FoodsContainer>
+    </>
+  );
+}
 
-          <FoodsContainer data-testid="foods-list">
-              {foods.map(food => (
-                <Food
-                  key={food.id}
-                  food={food}
-                  handleDelete={handleDeleteFood}
-                  handleEditFood={handleEditFood}
-                />
-              ))}
-          </FoodsContainer>
-        </>
-      );
-    }
-  };
 
-  export default Dashboard;
+export default Dashboard;

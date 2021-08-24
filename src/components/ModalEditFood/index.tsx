@@ -5,7 +5,6 @@ import { Form } from './styles';
 import Modal, { ModalProps } from '../Modal';
 import Input from '../Input';
 import { FormHandles, SubmitHandler } from '@unform/core';
-import { ModalAddFoodProps } from '../ModalAddFood';
 
 interface ModalEditFoodProps extends ModalProps {
   editingFood: Food
@@ -43,6 +42,5 @@ function ModalEditFood({ isOpen, setIsOpen, editingFood, handleUpdateFood }: Mod
     </Modal>
   );
 }
-};
 
 export default ModalEditFood;
